@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request,jsonify
+from flask import Flask, render_template,request,jsonify, redirect, url_for
 
 from pymongo import MongoClient
 client = MongoClient('localhost',27017)
@@ -25,9 +25,14 @@ def home():
 
         return render_template('board.html', email=user_info['email'])
     except jwt.ExpiredSignatureError:
-        return render_template('index.html', msg='로그인 시간이 만료되었습니다.')
+        return redirect(url_for("login", msg="로그인 정보가 만료되었습니다"))
     except jwt.exceptions.DecodeError:
-        return render_template('index.html', msg='로그인 정보가 존재하지 않습니다.')
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다"))
+
+@app.route('/login')
+def login():
+    msg = request.args.get('msg')
+    return render_template('login.html', msg=msg)
 
 # 과제 1. 회원가입, 로그인, 로그아웃
 
