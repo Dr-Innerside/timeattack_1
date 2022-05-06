@@ -25,9 +25,9 @@ def home():
 
         return render_template('board.html', email=user_info['email'])
     except jwt.ExpiredSignatureError:
-        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다'}, login=False)
+        return render_template('index.html', msg='로그인 시간이 만료되었습니다.')
     except jwt.exceptions.DecodeError:
-        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다'}, login=False)
+        return render_template('index.html', msg='로그인 정보가 존재하지 않습니다.')
 
 # 과제 1. 회원가입, 로그인, 로그아웃
 
@@ -79,7 +79,7 @@ def make_login():
     if result is not None:
         payload = {
             'email': email_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=5)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=50)
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
