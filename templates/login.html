@@ -3,12 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>login</title>
+
+
+    <script>
+        function check_login() {
+            let user_email = $('#input_email').val()
+            let user_pw = $('#input_pw').val()
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                data: {'email_give': user_email, 'pw_give': user_pw},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        alert(response["msg"]);
+                    }
+                }
+            })
+        }
+    </script>
 </head>
 <body>
 <form class="login_box">
-    <input type="email" placeholder="email을 입력하세요">
-    <input type="password" placeholder="비밀번호를 입력하세요">
-    <button>login</button>
+    <input id="input_email" type="email" placeholder="email을 입력하세요">
+    <input  id="input_pw" type="password" placeholder="비밀번호를 입력하세요">
+    <button onclick="check_login()">login</button>
 </form>
 </body>
 </html>
